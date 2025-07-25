@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { leadService } from "@/services/api/leadService";
+import { dealService } from "@/services/api/dealService";
 import ApperIcon from "@/components/ApperIcon";
 import Label from "@/components/atoms/Label";
 import Input from "@/components/atoms/Input";
@@ -118,11 +119,40 @@ source: 'Website',
     }
   };
 
-  const handleStatusChange = async (leadId, newStatus) => {
+const handleStatusChange = async (leadId, newStatus) => {
     try {
       const updatedLead = await leadService.update(leadId, { status: newStatus });
       setLeads(leads.map(lead => lead.Id === leadId ? updatedLead : lead));
-      toast.success('Lead status updated');
+      
+      // Check if status qualifies for deal creation
+      const qualifyingStatuses = ['Qualified', 'Proposal', 'Negotiation', 'Lost'];
+      if (qualifyingStatuses.includes(newStatus)) {
+        // Map lead status to deal stage
+        const statusToStageMap = {
+          'Qualified': 'Qualified',
+          'Proposal': 'Proposal', 
+          'Negotiation': 'Negotiation',
+          'Lost': 'Closed Lost'
+        };
+        
+        // Create deal from lead data
+        const dealData = {
+          name: updatedLead.company, // Deal name -> company
+          contactName: updatedLead.firstName, // Contact name -> first name
+          company: updatedLead.company, // Company -> company
+          stage: statusToStageMap[newStatus], // Stage -> status mapping
+          contactId: updatedLead.Id, // Use lead ID as temporary contact reference
+          value: 0, // Default value
+          probability: newStatus === 'Lost' ? 0 : 50, // 0% for lost, 50% default for others
+          expectedCloseDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
+          description: `Deal created from lead: ${updatedLead.firstName} ${updatedLead.lastName} - ${updatedLead.notes || 'No additional notes'}`
+        };
+        
+        await dealService.create(dealData);
+        toast.success(`Lead updated and deal created for ${updatedLead.company}`);
+      } else {
+        toast.success('Lead status updated');
+      }
     } catch (err) {
       toast.error('Failed to update lead status');
     }
