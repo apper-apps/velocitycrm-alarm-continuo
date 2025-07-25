@@ -102,3 +102,38 @@ body {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 468px 104px;
 }
+
+/* Pipeline drag and drop styles */
+.deal-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.deal-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.deal-dragging {
+  opacity: 0.5;
+  transform: rotate(5deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.pipeline-view {
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+/* Pipeline responsive scrolling */
+@media (max-width: 1279px) {
+  .pipeline-view .grid {
+    width: max-content;
+    min-width: 100%;
+  }
+}
+
+/* Drag over animation */
+@keyframes dragPulse {
+  0%, 100% { background-color: rgb(239 246 255); }
+  50% { background-color: rgb(219 234 254); }
+}

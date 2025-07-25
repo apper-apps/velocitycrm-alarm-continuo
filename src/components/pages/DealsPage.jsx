@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import DealList from "@/components/organisms/DealList";
 import DealForm from "@/components/organisms/DealForm";
+import PipelineView from "@/components/organisms/PipelineView";
 import { dealService } from "@/services/api/dealService";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
@@ -11,14 +12,14 @@ import Empty from "@/components/ui/Empty";
 import Loading from "@/components/ui/Loading";
 
 const DealsPage = () => {
-  const [deals, setDeals] = useState([]);
+const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingDeal, setEditingDeal] = useState(null);
   const [isFormLoading, setIsFormLoading] = useState(false);
-
+  const [viewMode, setViewMode] = useState("list"); // "list" or "pipeline"
   useEffect(() => {
     loadDeals();
   }, []);
@@ -93,10 +94,26 @@ const DealsPage = () => {
     }
   }
 
-  function handleCloseForm() {
+function handleCloseForm() {
     setShowForm(false);
     setEditingDeal(null);
     setIsFormLoading(false);
+  }
+
+  // Handle stage update from pipeline drag and drop
+  async function handleStageUpdate(dealId, newStage) {
+    try {
+      const updatedDeal = await dealService.update(dealId, { stage: newStage });
+      setDeals(prevDeals => 
+        prevDeals.map(deal => 
+          deal.Id === dealId ? updatedDeal : deal
+        )
+      );
+      toast.success(`Deal moved to ${newStage}`);
+    } catch (error) {
+      console.error("Failed to update deal stage:", error);
+      toast.error("Failed to update deal stage");
+    }
   }
 
   // Filter deals based on search query
@@ -122,7 +139,7 @@ const DealsPage = () => {
         <p className="text-gray-600">Manage your sales opportunities and revenue pipeline</p>
       </div>
 
-      <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+<div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex-1 max-w-md">
           <SearchBar
             value={searchQuery}
@@ -130,13 +147,39 @@ const DealsPage = () => {
             placeholder="Search deals, contacts, companies, or stages..."
           />
         </div>
-        <Button onClick={handleAddDeal} className="button-shadow hover-lift">
-          <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
-          Add Deal
-        </Button>
+        <div className="flex items-center gap-3">
+          <div className="flex bg-gray-100 rounded-lg p-1">
+            <button
+              onClick={() => setViewMode("list")}
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                viewMode === "list"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <ApperIcon name="List" className="w-4 h-4 mr-2 inline" />
+              List
+            </button>
+            <button
+              onClick={() => setViewMode("pipeline")}
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                viewMode === "pipeline"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <ApperIcon name="Columns" className="w-4 h-4 mr-2 inline" />
+              Pipeline
+            </button>
+          </div>
+          <Button onClick={handleAddDeal} className="button-shadow hover-lift">
+            <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
+            Add Deal
+          </Button>
+        </div>
       </div>
 
-      {filteredDeals.length === 0 ? (
+{filteredDeals.length === 0 ? (
         searchQuery ? (
           <Empty
             icon="Search"
@@ -152,11 +195,18 @@ const DealsPage = () => {
             onAction={handleAddDeal}
           />
         )
-      ) : (
+      ) : viewMode === "list" ? (
         <DealList
           deals={filteredDeals}
           onEdit={handleEditDeal}
           onDelete={handleDeleteDeal}
+        />
+      ) : (
+        <PipelineView
+          deals={filteredDeals}
+          onEdit={handleEditDeal}
+          onDelete={handleDeleteDeal}
+          onStageUpdate={handleStageUpdate}
         />
       )}
 
