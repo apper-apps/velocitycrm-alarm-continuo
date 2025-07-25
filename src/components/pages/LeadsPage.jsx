@@ -25,7 +25,7 @@ const LeadsPage = () => {
     phone: '',
     company: '',
     position: '',
-    source: 'Website',
+source: 'Website',
     status: 'New',
     companySize: 'Small (1-10)',
     budget: 'Under $10K',
@@ -33,7 +33,7 @@ const LeadsPage = () => {
     notes: ''
   });
 
-  const statuses = ['All', 'New', 'Contacted', 'Qualified', 'Converted', 'Lost'];
+  const statuses = ['All', 'New', 'Contacted', 'Qualified', 'Proposal', 'Negotiation', 'Converted', 'Lost'];
   const sources = ['All', 'Website', 'Referral', 'Cold Call', 'Email Campaign', 'Social Media', 'Trade Show'];
   const companySizes = ['Small (1-10)', 'Medium (11-100)', 'Large (101-1000)', 'Enterprise (1000+)'];
   const budgets = ['Under $10K', '$10K - $50K', '$50K - $100K', '$100K - $500K', 'Over $500K'];
@@ -135,11 +135,13 @@ const LeadsPage = () => {
     return { label: 'Unqualified', color: 'bg-gray-100 text-gray-800' };
   };
 
-  const getStatusColor = (status) => {
+const getStatusColor = (status) => {
     const colors = {
       'New': 'bg-blue-100 text-blue-800',
       'Contacted': 'bg-yellow-100 text-yellow-800',
       'Qualified': 'bg-green-100 text-green-800',
+      'Proposal': 'bg-orange-100 text-orange-800',
+      'Negotiation': 'bg-indigo-100 text-indigo-800',
       'Converted': 'bg-purple-100 text-purple-800',
       'Lost': 'bg-red-100 text-red-800'
     };
