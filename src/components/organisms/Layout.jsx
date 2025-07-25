@@ -15,10 +15,10 @@ const Layout = () => {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-50">
+<div className="h-screen flex overflow-hidden bg-gray-50">
       <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} />
       
-      <div className="flex flex-col w-0 flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden lg:ml-0">
         <Header onMenuClick={handleMenuClick} />
         
         <main className="flex-1 relative overflow-y-auto focus:outline-none">
