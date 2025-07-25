@@ -16,9 +16,11 @@ const Layout = () => {
 
   return (
 <div className="h-screen flex overflow-hidden bg-gray-50">
-      <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} />
+      <div className="relative z-50">
+        <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} />
+      </div>
       
-      <div className="flex flex-col flex-1 min-w-0 overflow-hidden lg:ml-0">
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden lg:ml-0 relative z-10">
         <Header onMenuClick={handleMenuClick} />
         
         <main className="flex-1 relative overflow-y-auto focus:outline-none">
