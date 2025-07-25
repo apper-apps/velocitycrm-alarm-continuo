@@ -1,0 +1,72 @@
+[
+  {
+    "Id": 1,
+    "name": "Enterprise Software License",
+    "contactId": 1,
+    "contactName": "John Smith",
+    "company": "Tech Corp",
+    "value": 50000,
+    "expectedCloseDate": "2024-02-15",
+    "stage": "Proposal",
+    "probability": 75,
+    "description": "Annual enterprise software licensing deal for 500 users",
+    "createdAt": "2024-01-10T10:00:00.000Z",
+    "updatedAt": "2024-01-15T14:30:00.000Z"
+  },
+  {
+    "Id": 2,
+    "name": "Marketing Campaign Services",
+    "contactId": 2,
+    "contactName": "Sarah Johnson",
+    "company": "Marketing Plus",
+    "value": 25000,
+    "expectedCloseDate": "2024-02-28",
+    "stage": "Negotiation",
+    "probability": 80,
+    "description": "Digital marketing campaign for Q1 product launch",
+    "createdAt": "2024-01-08T09:15:00.000Z",
+    "updatedAt": "2024-01-18T16:45:00.000Z"
+  },
+  {
+    "Id": 3,
+    "name": "Cloud Infrastructure Migration",
+    "contactId": 3,
+    "contactName": "Mike Davis",
+    "company": "DataFlow Inc",
+    "value": 120000,
+    "expectedCloseDate": "2024-03-10",
+    "stage": "Discovery",
+    "probability": 40,
+    "description": "Complete cloud migration and infrastructure modernization project",
+    "createdAt": "2024-01-12T11:20:00.000Z",
+    "updatedAt": "2024-01-20T09:10:00.000Z"
+  },
+  {
+    "Id": 4,
+    "name": "Training Program Development",
+    "contactId": 4,
+    "contactName": "Emma Wilson",
+    "company": "EduTech Solutions",
+    "value": 35000,
+    "expectedCloseDate": "2024-02-20",
+    "stage": "Qualified",
+    "probability": 60,
+    "description": "Custom training program development for new software platform", 
+    "createdAt": "2024-01-14T13:45:00.000Z",
+    "updatedAt": "2024-01-22T10:30:00.000Z"
+  },
+  {
+    "Id": 5,
+    "name": "Security Audit Services",
+    "contactId": 5,
+    "contactName": "David Brown",
+    "company": "SecureBase Ltd",
+    "value": 18000,
+    "expectedCloseDate": "2024-02-05",
+    "stage": "Closed Won",
+    "probability": 100,
+    "description": "Comprehensive security audit and penetration testing",
+    "createdAt": "2024-01-05T08:30:00.000Z",
+    "updatedAt": "2024-01-25T15:20:00.000Z"
+  }
+]
